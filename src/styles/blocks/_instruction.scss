@@ -3,6 +3,47 @@
     margin: 0;
   }
 
+  &__msg {
+    width: 100%;
+    padding: 25px;
+
+    & a {
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid white;
+
+      &:hover {
+        border-bottom: 1px dashed white;
+      }
+    }
+
+    &-heading {
+      margin: 10px 0 20px;
+
+      text-align: center;
+
+      color: white;
+
+      text-transform: uppercase;
+
+      @include make-ff-nova(36px);
+
+      &:after {
+        content: '!';
+      }
+    }
+
+    &-text {
+      margin: 5px 0 15px;
+
+      text-align: center;
+
+      color: white;
+
+      @include make-ff-nova(18px);
+    }
+  }
+
   &__link {
     display: inline-flex;
     align-items: center;

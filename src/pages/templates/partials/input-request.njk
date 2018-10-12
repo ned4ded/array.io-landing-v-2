@@ -1,9 +1,9 @@
 {% macro make(mods) %}
-<form class="request{{ ' ' + mods if mods }}" action="https://array.us19.list-manage.com/subscribe/post?u=60e9b1988b99d8c350dfd866c&amp;id=338d7ef96b" method="post">
+<form data-form class="request{{ ' ' + mods if mods }}" action="https://array.us19.list-manage.com/subscribe/post-json?u=60e9b1988b99d8c350dfd866c&amp;id=338d7ef96b" method="post">
   <div class="request__container">
     <input size="10" class="request__input" type="email" name="EMAIL" required placeholder="Your Email">
     <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_60e9b1988b99d8c350dfd866c_338d7ef96b" tabindex="-1" value=""></div>
-    <button class="request__submit" type="submit">Subscribe</button>
+    <button data-modal-toggler="modal-form" class="request__submit" type="submit">Subscribe</button>
   </div>
 </form>
 {% endmacro %}

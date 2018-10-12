@@ -32,11 +32,21 @@
 
     {{ nav.make(links) }}
 
-    {# <div data-modal-state="closed" id="lining" class="lining"></div> #}
+    <div data-modal-state="closed" id="modal-form" class="instruction__guideline">
+      <div class="instruction__msg">
+        <p data-modal-heading class="instruction__msg-heading"></p>
+        <p data-modal-text class="instruction__msg-text"></p>
+      </div>
+    </div>
+
+    <div data-modal-state="closed" id="lining" class="lining"></div>
   </div>
 
-
   {# <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/js/swiper.min.js"></script> #}
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </body>

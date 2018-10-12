@@ -164,63 +164,67 @@ document.addEventListener('DOMContentLoaded', (() => {
       this.busy = false;
     }
   }
-  //
-  // class ModalWindow extends Animation {
-  //   constructor(element, lining, initState = 'closed', openTime = 500) {
-  //     super(element, initState, openTime, false);
-  //
-  //     this.lining = lining;
-  //     this.notify();
-  //   }
-  //
-  //   notify() {
-  //     this.el.dataset.modalState = this.state;
-  //     this.lining.dataset.modalState = this.state;
-  //   }
-  //
-  //   listener = (ev) => {
-  //     ev.preventDefault();
-  //
-  //     return;
-  //   }
-  //
-  //   open(cb = () => {}) {
-  //     if(this.isState('open') || this.isBusy()) return false;
-  //
-  //     window.addEventListener('touchmove', this.listener);
-  //     window.addEventListener('wheel', this.listener);
-  //     this.occupy();
-  //     this.setState('opening');
-  //
-  //     setTimeout(() => {
-  //       this.setState('open');
-  //       this.vacate();
-  //
-  //       return cb();
-  //     }, this.openTime);
-  //
-  //     return this;
-  //   }
-  //
-  //   close(cb = () => {}) {
-  //     if(this.isState('closed') || this.isBusy()) return false;
-  //
-  //     this.occupy();
-  //     this.setState('closing');
-  //
-  //     setTimeout(() => {
-  //       this.setState('closed');
-  //       this.vacate();
-  //
-  //       window.removeEventListener('touchmove', this.listener);
-  //       window.removeEventListener('wheel', this.listener);
-  //
-  //       return cb();
-  //     }, this.openTime);
-  //
-  //     return this;
-  //   }
-  // }
+
+  class ModalWindow extends Animation {
+    constructor(element, lining, initState = 'closed', openTime = 500) {
+      super(element, initState, openTime, false);
+
+      this.lining = lining;
+      this.notify();
+    }
+
+    notify() {
+      this.el.dataset.modalState = this.state;
+      this.lining.dataset.modalState = this.state;
+    }
+
+    listener = (ev) => {
+      ev.preventDefault();
+
+      return;
+    }
+
+    isSameForm(form) {
+      return this.el.isSameNode(form);
+    }
+
+    open(cb = () => {}) {
+      if(this.isState('open') || this.isBusy()) return false;
+
+      window.addEventListener('touchmove', this.listener);
+      window.addEventListener('wheel', this.listener);
+      this.occupy();
+      this.setState('opening');
+
+      setTimeout(() => {
+        this.setState('open');
+        this.vacate();
+
+        return cb();
+      }, this.openTime);
+
+      return this;
+    }
+
+    close(cb = () => {}) {
+      if(this.isState('closed') || this.isBusy()) return false;
+
+      this.occupy();
+      this.setState('closing');
+
+      setTimeout(() => {
+        this.setState('closed');
+        this.vacate();
+
+        window.removeEventListener('touchmove', this.listener);
+        window.removeEventListener('wheel', this.listener);
+
+        return cb();
+      }, this.openTime);
+
+      return this;
+    }
+  }
 
   class SmoothScroll {
     constructor(link) {
@@ -338,43 +342,50 @@ document.addEventListener('DOMContentLoaded', (() => {
   //   return instruction ? new Swiper(instruction, options) : null;
   // })();
 
-  // const lining = document.getElementById('lining');
+  const lining = document.getElementById('lining');
 
-  // const modals = Array.from( document.querySelectorAll('[data-modal-toggler]') ).map(el => {
-  //   const id = el.dataset.modalToggler;
-  //   const modal = document.getElementById(id);
-  //
-  //   return modal ? { toggler: el, modal: new ModalWindow(modal, lining) } : null;
-  // });
+  const formModal = new ModalWindow( document.getElementById('modal-form'), lining );
 
-  // modals.forEach(({ toggler, modal }) => {
-  //   const listener = (ev) => {
-  //     ev.preventDefault();
-  //
-  //     toggler.removeEventListener('click', listener);
-  //
-  //     modal.open(() => {
-  //       lining.addEventListener('click', liningListener);
-  //
-  //       return;
-  //     });
-  //
-  //   }
-  //
-  //   const liningListener = (ev) => {
-  //     ev.preventDefault();
-  //
-  //     lining.removeEventListener('click', liningListener);
-  //
-  //     modal.close(() => {
-  //       toggler.addEventListener('click', listener);
-  //
-  //       return;
-  //     })
-  //   }
-  //
-  //   toggler.addEventListener('click', listener);
-  // });
+  const liningListener = (ev) => {
+    ev.preventDefault();
+
+    lining.removeEventListener('click', liningListener);
+    document.removeEventListener('keydown', liningListener);
+
+    formModal.close();
+  }
+
+  $('[data-form]').submit(function (e) {
+    const heading = $( formModal.el ).find('[data-modal-heading]');
+    const text = $( formModal.el ).find('[data-modal-text]');
+
+    heading.empty();
+    text.empty();
+
+    e.preventDefault();
+
+    $.ajax({
+      url: '//array.us19.list-manage.com/subscribe/post-json?u=60e9b1988b99d8c350dfd866c&amp;id=338d7ef96b&c=?',
+      type: 'GET',
+      data: $( this ).serialize(),
+      dataType: 'jsonp',
+      contentType: "application/json; charset=utf-8",
+      success: function (data) {
+        const { result, msg } = data;
+
+        heading.append(result);
+        text.append(msg);
+
+        formModal.open(() => {
+          lining.addEventListener('click', liningListener);
+          document.addEventListener('keydown', liningListener);
+
+          return;
+        });
+      },
+    });
+  });
+
 
   // if(!screen.smallerThan('sm')) {
   //   const icons = Array.from( document.querySelectorAll('[data-levitate]') ).reduce((acc, cur) => {
@@ -395,6 +406,9 @@ document.addEventListener('DOMContentLoaded', (() => {
   //     return acc + 200;
   //   }, 0);
   // }
+
+  const forms = document.querySelectorAll('[data-form]');
+  console.log(forms);
 
 
 }), false);
