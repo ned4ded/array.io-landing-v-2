@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', (() => {
     e.preventDefault();
 
     $.ajax({
-      url: '//array.us19.list-manage.com/subscribe/post-json?u=60e9b1988b99d8c350dfd866c&amp;id=338d7ef96b&c=?',
+      url: '//array.us19.list-manage.com/subscribe/post-json?c=?',
       type: 'GET',
       data: $( this ).serialize(),
       dataType: 'jsonp',
